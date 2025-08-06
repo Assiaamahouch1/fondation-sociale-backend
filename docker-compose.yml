@@ -1,0 +1,132 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - fondation-network
+
+  config-service:
+    build: ./config-service
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - fondation-network
+
+  discovery-service:
+    build: ./discovery-service
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - fondation-network
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - fondation-network
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fondation_user_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    networks:
+      - fondation-network
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - discovery-service
+      - user-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fondation_auth_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    networks:
+      - fondation-network
+
+  content-service:
+    build: ./content-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mysql
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fondation_content_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    networks:
+      - fondation-network
+
+  social-service:
+    build: ./social-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fondation_social_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    networks:
+      - fondation-network
+
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mysql
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fondation_notification_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    networks:
+      - fondation-network
+
+  admin-service:
+    build: ./admin-service
+    ports:
+      - "8086:8086"
+    depends_on:
+      - mysql
+      - discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fondation_admin_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    networks:
+      - fondation-network
+
+volumes:
+  mysql_data:
+
+networks:
+  fondation-network:
+    driver: bridge
