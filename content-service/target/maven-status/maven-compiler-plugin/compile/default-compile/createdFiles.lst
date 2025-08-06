@@ -1,0 +1,7 @@
+com/fondationsociale/content/enums/ContentType.class
+com/fondationsociale/content/entity/Content.class
+com/fondationsociale/content/entity/Comment.class
+com/fondationsociale/content/enums/ContentStatus.class
+com/fondationsociale/content/ContentServiceApplication.class
+com/fondationsociale/content/feign/UserFeignClient.class
+com/fondationsociale/content/feign/UserDto.class
