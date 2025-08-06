@@ -1,6 +1,0 @@
-/home/runner/work/fondation-sociale-backend/fondation-sociale-backend/content-service/src/main/java/com/fondationsociale/content/ContentServiceApplication.java
-/home/runner/work/fondation-sociale-backend/fondation-sociale-backend/content-service/src/main/java/com/fondationsociale/content/entity/Comment.java
-/home/runner/work/fondation-sociale-backend/fondation-sociale-backend/content-service/src/main/java/com/fondationsociale/content/entity/Content.java
-/home/runner/work/fondation-sociale-backend/fondation-sociale-backend/content-service/src/main/java/com/fondationsociale/content/enums/ContentStatus.java
-/home/runner/work/fondation-sociale-backend/fondation-sociale-backend/content-service/src/main/java/com/fondationsociale/content/enums/ContentType.java
-/home/runner/work/fondation-sociale-backend/fondation-sociale-backend/content-service/src/main/java/com/fondationsociale/content/feign/UserFeignClient.java
