@@ -1,0 +1,4 @@
+com/contentservice/entity/Content.class
+com/contentservice/entity/Content$ContentStatus.class
+com/contentservice/ContentServiceApplication.class
+com/contentservice/entity/Category.class

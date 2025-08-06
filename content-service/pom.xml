@@ -10,9 +10,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>user-service</artifactId>
-    <name>User Service</name>
-    <description>User Management Microservice</description>
+    <artifactId>content-service</artifactId>
+    <name>Content Service</name>
+    <description>Content Management Microservice</description>
 
     <dependencies>
         <dependency>

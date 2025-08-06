@@ -24,10 +24,10 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/users/exists/**").permitAll()
-                .requestMatchers("/api/roles/**").hasRole("ADMIN")
-                .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "ADHERENT")
-                .requestMatchers("/actuator/**").permitAll()
+                .antMatchers("/api/users/exists/**").permitAll()
+                .antMatchers("/api/roles/**").hasRole("ADMIN")
+                .antMatchers("/api/users/**").hasAnyRole("ADMIN", "ADHERENT")
+                .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
             );
         

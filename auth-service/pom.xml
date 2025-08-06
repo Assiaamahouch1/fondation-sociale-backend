@@ -10,9 +10,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>user-service</artifactId>
-    <name>User Service</name>
-    <description>User Management Microservice</description>
+    <artifactId>auth-service</artifactId>
+    <name>Auth Service</name>
+    <description>Authentication and Authorization Microservice</description>
 
     <dependencies>
         <dependency>
@@ -42,6 +42,23 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
