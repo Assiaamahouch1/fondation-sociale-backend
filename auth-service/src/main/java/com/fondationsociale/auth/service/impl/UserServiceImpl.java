@@ -32,21 +32,18 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
     
-    @Override
     @Transactional(readOnly = true)
     public List<UserGetDto> findAll() {
         List<User> users = userRepository.findAll();
         return userTransformer.entitiesToGetDtos(users);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public Optional<UserGetDto> findById(Long id) {
         return userRepository.findById(id)
                 .map(userTransformer::entityToGetDto);
     }
     
-    @Override
     public UserGetDto save(UserPostDto userPostDto) {
         User user = userTransformer.postDtoToEntity(userPostDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -54,7 +51,6 @@ public class UserServiceImpl implements UserService {
         return userTransformer.entityToGetDto(savedUser);
     }
     
-    @Override
     public Optional<UserGetDto> update(Long id, UserPostDto userPostDto) {
         return userRepository.findById(id)
                 .map(existingUser -> {
@@ -67,7 +63,6 @@ public class UserServiceImpl implements UserService {
                 });
     }
     
-    @Override
     public boolean deleteById(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
@@ -76,79 +71,67 @@ public class UserServiceImpl implements UserService {
         return false;
     }
     
-    @Override
     @Transactional(readOnly = true)
     public boolean existsById(Long id) {
         return userRepository.existsById(id);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public long count() {
         return userRepository.count();
     }
     
-    @Override
     @Transactional(readOnly = true)
     public Optional<UserGetDto> findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(userTransformer::entityToGetDto);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public Optional<UserGetDto> findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(userTransformer::entityToGetDto);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public Optional<UserGetDto> findByUsernameOrEmail(String usernameOrEmail) {
         return userRepository.findByUsernameOrEmail(usernameOrEmail)
                 .map(userTransformer::entityToGetDto);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public List<UserGetDto> findByRole(UserRole role) {
         List<User> users = userRepository.findByRole(role);
         return userTransformer.entitiesToGetDtos(users);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public List<UserGetDto> findByIsActive(Boolean isActive) {
         List<User> users = userRepository.findByIsActive(isActive);
         return userTransformer.entitiesToGetDtos(users);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public List<UserGetDto> findByRoleAndIsActive(UserRole role, Boolean isActive) {
         List<User> users = userRepository.findByRoleAndIsActive(role, isActive);
         return userTransformer.entitiesToGetDtos(users);
     }
     
-    @Override
     @Transactional(readOnly = true)
     public long countByRole(UserRole role) {
         return userRepository.countByRole(role);
     }
     
-    @Override
     public Optional<UserGetDto> activateUser(Long id) {
         return userRepository.findById(id)
                 .map(user -> {
@@ -158,7 +141,6 @@ public class UserServiceImpl implements UserService {
                 });
     }
     
-    @Override
     public Optional<UserGetDto> deactivateUser(Long id) {
         return userRepository.findById(id)
                 .map(user -> {

@@ -126,92 +126,74 @@ public class AuthServiceImpl implements AuthService {
     }
     
     // Delegate methods to UserService
-    @Override
     public List<UserGetDto> findAll() {
         return userService.findAll();
     }
     
-    @Override
     public Optional<UserGetDto> findById(Long id) {
         return userService.findById(id);
     }
     
-    @Override
     public UserGetDto save(UserPostDto userPostDto) {
         return userService.save(userPostDto);
     }
     
-    @Override
     public Optional<UserGetDto> update(Long id, UserPostDto userPostDto) {
         return userService.update(id, userPostDto);
     }
     
-    @Override
     public boolean deleteById(Long id) {
         return userService.deleteById(id);
     }
     
-    @Override
     public boolean existsById(Long id) {
         return userService.existsById(id);
     }
     
-    @Override
     public long count() {
         return userService.count();
     }
     
-    @Override
     public Optional<UserGetDto> findByUsername(String username) {
         return userService.findByUsername(username);
     }
     
-    @Override
     public Optional<UserGetDto> findByEmail(String email) {
         return userService.findByEmail(email);
     }
     
-    @Override
     public Optional<UserGetDto> findByUsernameOrEmail(String usernameOrEmail) {
         return userService.findByUsernameOrEmail(usernameOrEmail);
     }
     
-    @Override
     public boolean existsByUsername(String username) {
         return userService.existsByUsername(username);
     }
     
-    @Override
     public boolean existsByEmail(String email) {
         return userService.existsByEmail(email);
     }
     
-    @Override
     public List<UserGetDto> findByRole(UserRole role) {
         return userService.findByRole(role);
     }
     
-    @Override
     public List<UserGetDto> findByIsActive(Boolean isActive) {
         return userService.findByIsActive(isActive);
     }
     
-    @Override
     public List<UserGetDto> findByRoleAndIsActive(UserRole role, Boolean isActive) {
         return userService.findByRoleAndIsActive(role, isActive);
     }
     
-    @Override
     public long countByRole(UserRole role) {
         return userService.countByRole(role);
     }
     
-    @Override
     public Optional<UserGetDto> activateUser(Long id) {
         return userService.activateUser(id);
     }
     
-    @Override
     public Optional<UserGetDto> deactivateUser(Long id) {
         return userService.deactivateUser(id);
     }

@@ -8,7 +8,21 @@ import com.fondationsociale.auth.enums.UserRole;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService extends AbstractService<User, UserGetDto, UserPostDto, Long> {
+public interface UserService {
+    
+    List<UserGetDto> findAll();
+    
+    Optional<UserGetDto> findById(Long id);
+    
+    UserGetDto save(UserPostDto userPostDto);
+    
+    Optional<UserGetDto> update(Long id, UserPostDto userPostDto);
+    
+    boolean deleteById(Long id);
+    
+    boolean existsById(Long id);
+    
+    long count();
     
     Optional<UserGetDto> findByUsername(String username);
     
