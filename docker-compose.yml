@@ -1,0 +1,168 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: fondation-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: fondation_sociale_auth
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
+    networks:
+      - fondation-network
+
+  config-service:
+    build: ./config-service
+    container_name: fondation-config-service
+    ports:
+      - "8888:8888"
+    networks:
+      - fondation-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  discovery-service:
+    build: ./discovery-service
+    container_name: fondation-discovery-service
+    ports:
+      - "8761:8761"
+    depends_on:
+      config-service:
+        condition: service_healthy
+    networks:
+      - fondation-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  auth-service:
+    build: ./auth-service
+    container_name: fondation-auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - config-service
+      - discovery-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fondation_sociale_auth?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888
+    networks:
+      - fondation-network
+
+  user-service:
+    build: ./user-service
+    container_name: fondation-user-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - config-service
+      - discovery-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fondation_sociale_user?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888
+    networks:
+      - fondation-network
+
+  content-service:
+    build: ./content-service
+    container_name: fondation-content-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mysql
+      - config-service
+      - discovery-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fondation_sociale_content?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888
+    networks:
+      - fondation-network
+
+  social-service:
+    build: ./social-service
+    container_name: fondation-social-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql
+      - config-service
+      - discovery-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fondation_sociale_social?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888
+    networks:
+      - fondation-network
+
+  notification-service:
+    build: ./notification-service
+    container_name: fondation-notification-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mysql
+      - config-service
+      - discovery-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fondation_sociale_notification?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888
+    networks:
+      - fondation-network
+
+  admin-service:
+    build: ./admin-service
+    container_name: fondation-admin-service
+    ports:
+      - "8086:8086"
+    depends_on:
+      - mysql
+      - config-service
+      - discovery-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fondation_sociale_admin?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888
+    networks:
+      - fondation-network
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: fondation-api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-service
+      - discovery-service
+      - auth-service
+      - user-service
+      - content-service
+      - social-service
+      - notification-service
+      - admin-service
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-service:8761/eureka/
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888
+    networks:
+      - fondation-network
+
+volumes:
+  mysql_data:
+
+networks:
+  fondation-network:
+    driver: bridge
