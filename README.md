@@ -8,8 +8,8 @@ This project is a complete microservices-based backend for a social foundation p
 ### Microservices
 1. **config-service** (Port 8888) - Configuration Server
 2. **discovery-service** (Port 8761) - Service Discovery (Eureka)
-3. **auth-service** (Port 8081) - Authentication & User Management
-4. **user-service** (Port 8082) - Extended User Management
+3. **user-service** (Port 8081) - User Management
+4. **auth-service** (Port 8082) - Authentication & JWT Management
 5. **content-service** (Port 8083) - Content Management
 6. **social-service** (Port 8084) - Social Features
 7. **notification-service** (Port 8085) - Notifications

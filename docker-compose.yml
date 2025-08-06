@@ -48,7 +48,7 @@ services:
     build: ./auth-service
     container_name: fondation-auth-service
     ports:
-      - "8081:8081"
+      - "8082:8082"
     depends_on:
       - mysql
       - config-service
@@ -64,7 +64,7 @@ services:
     build: ./user-service
     container_name: fondation-user-service
     ports:
-      - "8082:8082"
+      - "8081:8081"
     depends_on:
       - mysql
       - config-service
